@@ -1,0 +1,15 @@
+2015-11-21 06:16:29,519 [INFO ]-> Exception: global name 'logger' is not defined
+2015-11-21 06:18:00,741 [INFO ]-> Exception: global name 'logger' is not defined
+2015-11-21 06:19:08,129 [INFO ]-> Exception: global name 'logger' is not defined
+2015-11-21 06:20:01,555 [INFO ]-> Exception: global name 'logger' is not defined
+2015-11-21 06:20:08,836 [INFO ]-> Exception: global name 'logger' is not defined
+2015-11-21 06:22:53,831 [INFO ]-> Exception: global name 'logger' is not defined
+2015-11-21 06:23:26,339 [INFO ]-> Exception: global name 'logger' is not defined
+2015-11-21 06:25:14,644 [INFO ]-> Exception: global name 'logger' is not defined
+2015-11-21 06:26:05,281 [INFO ]-> Exception: global name 'logger' is not defined
+2015-11-21 06:26:23,771 [INFO ]-> Exception: global name 'logger' is not defined
+2015-11-21 06:28:24,025 [INFO ]-> Exception: global name 'logger' is not defined
+2015-11-21 06:29:41,030 [INFO ]-> Exception: global name 'logger' is not defined
+2015-11-21 06:30:07,403 [INFO ]-> Exception: global name 'logger' is not defined
+2015-11-21 06:33:02,820 [INFO ]-> Exception: (1054, u"Unknown column 'admin' in 'where clause'")
+2015-11-21 06:33:52,490 [INFO ]-> Exception: 'role'

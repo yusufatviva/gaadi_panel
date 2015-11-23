@@ -1,0 +1,27 @@
+{% load staticfiles %}
+<div class="brand">
+    <!--\\\\\\\ brand Start \\\\\\-->
+    <div class="logo" style="display:block"><span class="theme_color">GAADI</span> Panel</div>
+{#    <div class="logo" style="display:block"> <img class="logo-img" src="{% static "images/viva_logo.png" %}"></div>#}
+</div>
+<!--\\\\\\\ brand end \\\\\\-->
+<div class="header_top_bar">
+    <!--\\\\\\\ header top bar start \\\\\\-->
+    <a href="javascript:void(0);" class="menutoggle"> <i class="fa fa-bars"></i> </a>
+
+    <div class="top_right_bar">
+
+        <div class="user_admin dropdown"><a href="javascript:void(0);" data-toggle="dropdown"><i
+                style="padding-top: 15px" class="fa fa-user"></i><span
+                class="user_adminname">{{ session_data.username }}</span> <b class="caret"></b> </a>
+            <ul class="dropdown-menu">
+                <div class="top_pointer"></div>
+{#                <li><a href="/user/profile"><i class="fa fa-user"></i> Profile</a></li>#}
+{#                <li><a href="help.html"><i class="fa fa-question-circle"></i> Help</a></li>#}
+{#                <li><a href="settings.html"><i class="fa fa-cog"></i> Setting </a></li>#}
+                <li><a href="/logout"><i class="fa fa-power-off"></i> Logout</a></li>
+            </ul>
+        </div>
+
+    </div>
+</div>

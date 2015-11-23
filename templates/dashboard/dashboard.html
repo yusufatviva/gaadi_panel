@@ -1,0 +1,344 @@
+{% load staticfiles %}
+<style>
+
+
+    .multi-stat-box .left {
+        float: none;
+        width: 40%;
+    }
+</style>
+<div class="pull-left breadcrumb_admin clear_both">
+    <div class="pull-left page_title theme_color">
+        <h1>GAADI</h1>
+
+        <h2 class="">Dashboard</h2>
+    </div>
+    <div class="pull-right">
+        <ol class="breadcrumb">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Dashboard</a></li>
+
+        </ol>
+    </div>
+</div>
+<div class="container clear_both padding_fix">
+    <div class="row">
+
+        <div class="col-sm-6 col-md-3">
+            <div class="information blue_info">
+                <div class="information_inner">
+                    <div class="info blue_symbols"><i class="fa fa-bullhorn icon"></i></div>
+                    <span>ACTIVE CAMPAIGNS</span>
+
+                    <h4 class="bolded">{{ active_campaigns }}</h4>
+
+
+                    <b class="">
+                        <small>Total Active Campaigns</small>
+                    </b>
+
+
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-3">
+            <div class="information gray_info">
+                <div class="information_inner">
+                    <div class="info gray_symbols"><i class="fa fa-money icon"></i></div>
+                    <span>TOTAL CREDIT</span>
+
+                    <h4 class="bolded"><i class="fa fa-rupee"></i>{{ credit }}</h4>
+
+                    <b class="">
+                        <small>{% if promo_credit %} Promo :{{ promo_credit }},{% endif %}
+                            {% if trans_credit %}Trans :{{ trans_credit }}{% endif %}</small>
+                    </b>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-3">
+            <div class="information red_info">
+                <div class="information_inner">
+                    <div class="info red_symbols"><i class="fa fa-phone icon"></i></div>
+                    <span>TOTAL DIALED</span>
+
+                    <h4 class="bolded">{{ total_dialed }}</h4>
+
+                    <b class="">
+                        <small>{{ user_dialed_msg }}</small>
+                    </b>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-3">
+            <div class="information green_info">
+                <div class="information_inner">
+                    <div class="info green_symbols"><i class="fa fa-thumbs-o-up icon"></i></div>
+                    <span>TOTAL SUCCESS</span>
+
+                    <h4 class="bolded">{{ total_success }}</h4>
+
+                    <b class="">
+                        <small>{{ user_success_msg }}</small>
+                    </b>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div>
+    <p>{{ vmn_table }}</p>
+        <table class="">
+        <tr>
+            <th>vmn_no</th>
+            <th>cp_no</th>
+            <th>seq_no</th>
+            <th>sms_flag</th>
+            <th>isactive</th>
+            <th>timestamp</th>
+        </tr>
+        {% for b in vmn_table %}
+            <tr>
+                <td>{{ b.vmn_no }}</td>
+                <td>{{ b.cp_no }}</td>
+                <td>{{ b.seq_no }}</td>
+                <td>{{ b.sms_flag }}</td>
+                <td>{{ b.isactive }}</td>
+                <td>{{ b.timestamp }}</td>
+            </tr>
+        {% endfor %}
+        </table>
+    </div>
+<div>
+<script type="text/javascript">
+    $(function () {
+        var url = $(location).attr('href');
+
+        $("a[href='/dashboard']").parents("li").addClass("left_nav_active");
+{#        $('a[href="http://google.com"]');#}
+
+        $("#no_graph_data").block({ message: '<img src="{% static "images/Loader1.gif" %}" />', css: {
+            padding:        0,
+            margin:         0,
+            width:          '30%',
+            top:            '20%',
+            bottom:         '80%',
+            left:           '35%',
+            textAlign:      'center',
+            color:          '#fff',
+            border:         '3px solid #fff',
+            backgroundColor:'#fff',
+            cursor:         'wait'
+        }  });
+        var csrf = $('input[name=csrfmiddlewaretoken]').val();
+        $.post("{{ rUrl }}", {'csrfmiddlewaretoken': csrf}, function (data) {
+            console.log(data);
+            $("#no_graph_data").show()
+            var dates = [];
+            var success = [];
+            var failure = [];
+            var total_dialed = [];
+            $.each(data, function (key, value) {
+                dates.push(value['date']);
+                success.push(value['success']);
+                failure.push(value['failed']);
+{#                total_dialed.push(value['success'] + value['failed']);#}
+            });
+            {#            console.log(dates);#}
+            {#            console.log(success);#}
+            {#            console.log(failure);#}
+
+            $("#no_graph_data").hide()
+
+            $('#graph1').highcharts({
+                chart: {
+                    type: 'column'
+                },
+                colors: ['#F5646C','#49e2d7'],
+                title: {
+                    text: 'Campaign Analytic'
+                },
+                subtitle: {
+                    text: 'Last 10 Days'
+                },
+                xAxis: {
+                    categories: dates
+                },
+
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: 'Total Calls'
+                    },
+                    stackLabels: {
+                        enabled: true,
+                        style: {
+                            fontWeight: 'bold',
+                            color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+                        }
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                            '<td style="padding:0"><b>{point.y:.1f}</b></td></tr>',
+                    footerFormat: '</table>',
+                    shared: true,
+                    useHTML: true
+                },
+                {#                colors: ['#60e176', '#f26c6c'],#}
+                plotOptions: {
+                    column: {
+                        {#                        pointPadding: 0.2,#}
+                        {#                        borderWidth: 0, #}
+                        stacking: 'normal',
+                        dataLabels: {
+                            enabled: true,
+                            color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white',
+                            style: {
+                                textShadow: '0 0 3px black'
+                            }
+                        }
+                    }
+                },
+                series: [
+
+                    {
+                        name: 'Failed',
+                        data: failure
+
+                    },
+                    {
+                        name: 'Success',
+                        data: success
+
+                    }
+                ]
+            });
+
+{#            get_piechart();#}
+        }, "json");
+
+
+        var get_piechart = function () {
+            $.post("{{ pUrl }}", {'csrfmiddlewaretoken': csrf}, function (data) {
+{#                $("#no_graph_data").show()#}
+                $("#no_graph_data").show()
+                var minutes = [];
+                var success = [];
+                var failure = [];
+                console.log("data",data)
+                $.each(data, function (key, value) {
+                minutes.push(value['date']);
+                success.push(value['success']);
+                failure.push(value['failed']);
+{#                total_dialed.push(value['success'] + value['failed']);#}
+            });
+                $("#no_graph_data").hide()
+                console.log(minutes,success,failure)
+                $('#minuteWiseData').highcharts({
+                chart: {
+                    type: 'column'
+                },
+                colors: ['#F5646C','#49e2d7'],
+                title: {
+                    text: 'Campaign Analytic'
+                },
+                subtitle: {
+                    text: 'Last 30 Minutes'
+                },
+                xAxis: {
+                    categories: minutes
+                },
+
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: 'Total Calls'
+                    },
+                    stackLabels: {
+                        enabled: true,
+                        style: {
+                            fontWeight: 'bold',
+                            color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+                        }
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                            '<td style="padding:0"><b>{point.y:.1f}</b></td></tr>',
+                    footerFormat: '</table>',
+                    shared: true,
+                    useHTML: true
+                },
+                {#                colors: ['#60e176', '#f26c6c'],#}
+                plotOptions: {
+                    column: {
+                        {#                        pointPadding: 0.2,#}
+                        {#                        borderWidth: 0, #}
+                        stacking: 'normal',
+                        dataLabels: {
+                            enabled: true,
+                            color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white',
+                            style: {
+                                textShadow: '0 0 3px black'
+                            }
+                        }
+                    }
+                },
+                series: [
+
+                    {
+                        name: 'Failed',
+                        data: failure
+
+                    },
+                    {
+                        name: 'Success',
+                        data: success
+
+                    }
+                ]
+            });
+{#                $('#campReasonPie').highcharts({#}
+{#                    chart: {#}
+{##}
+{#                        plotBackgroundColor: null,#}
+{#                        plotBorderWidth: null,#}
+{#                        plotShadow: false#}
+{#                    },#}
+{#                    colors: ['#F5646C','#49e2d7'],#}
+{#                    title: {#}
+{#                        text: "Today's Success/Failed Ratio"#}
+{#                    },#}
+{#                    tooltip: {#}
+{#                        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'#}
+{#                    },#}
+{#                    plotOptions: {#}
+{#                        pie: {#}
+{#                            allowPointSelect: true,#}
+{#                            cursor: 'pointer',#}
+{#                            dataLabels: {#}
+{#                                enabled: true,#}
+{#                                format: '<b>{point.name}</b>: {point.percentage:.1f} %',#}
+{#                                style: {#}
+{#                                    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'#}
+{#                                }#}
+{#                            }#}
+{#                        }#}
+{#                    },#}
+{#                    series: [#}
+{#                        {#}
+{#                            type: 'pie',#}
+{#                            name: 'Hangup Cause',#}
+{#                            data: data.reason#}
+{#                        }#}
+{#                    ]#}
+{#                });#}
+            }, "json");
+
+        };
+
+    });
+</script>

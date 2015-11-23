@@ -1,0 +1,20 @@
+<ul>
+{#    {{ role_menu.menu }}#}
+    {% for menu in role_menu %}
+
+        <li><a href="{% if not menu.sub_menu %}{{ menu.url }}{% else %}javascript:void(0);{% endif %}">
+            <i class="fa fa-lg {{ menu.icon }}"></i>{{ menu.menu_name }}
+            {% if menu.sub_menu %}
+                <span class="plus"><i class="fa fa-lg fa-plus-circle"></i></span>
+            {% endif %}</a>
+            {% if menu.sub_menu %}
+                <ul>
+                    {% for sub in menu.sub_menu %}
+                        <li><a href="{{ sub.url }}"> <span>&nbsp;</span> <i class="fa fa-lg {{ sub.icon }}"></i>
+                            <b>{{ sub.menu_name }}</b> </a></li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </li>
+    {% endfor %}
+</ul>

@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    {% include "commons/head_include.html" %}
+</head>
+<body class="dark_theme  fixed_header left_nav_fixed">
+<div class="wrapper">
+    <!--\\\\\\\ wrapper Start \\\\\\-->
+    <div class="header_bar">
+        <!--\\\\\\\ header Start \\\\\\-->
+        {% include "commons/topbar_include.html" %}
+        <!--\\\\\\\ header top bar end \\\\\\-->
+    </div>
+    <!--\\\\\\\ header end \\\\\\-->
+    <div class="inner">
+        <!--\\\\\\\ inner start \\\\\\-->
+        <div class="left_nav">
+            <!--\\\\\\\left_nav start \\\\\\-->
+            {% include "commons/sidebar_include.html" %}
+        </div>
+        <!--\\\\\\\left_nav end \\\\\\-->
+        <div class="contentpanel">
+            <!--\\\\\\\ contentpanel start\\\\\\-->
+
+            {% include body_template %}
+
+            <!--\\\\\\\ container  end \\\\\\-->
+        </div>
+        <!--\\\\\\\ content panel end \\\\\\-->
+    </div>
+    <!--\\\\\\\ inner end\\\\\\-->
+</div>
+<!--\\\\\\\ wrapper end\\\\\\-->
+
+
+{% include "commons/bottom_include.html" %}
+<script>
+    $(document).ready(function () {
+        $("a[href='{{ session_data.current_url }}']").parents("li").parents("li").addClass("left_nav_active theme_border");
+        $("a[href='{{ session_data.current_url }}']").parents("ul").css("display", "block");
+        $("a[href='{{ session_data.current_url }}']").children(["b","i"]).addClass("theme_color")
+
+
+    })
+
+</script>
+</body>
+</html>
